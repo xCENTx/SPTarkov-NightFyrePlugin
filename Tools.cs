@@ -42,6 +42,7 @@ namespace TarkovModMenu
             //  Plugin.looseLootStyle.normal.background = Style.MakeTexture(2, 2, Plugin.colorLooseLoot.Value);
         }
 
+        //  https://forum.unity.com/threads/change-gui-box-color.174609/#post-1194616
         public static Texture2D MakeTexture(int width, int height, Color col)
         {
             Color[] pix = new Color[width * height];
@@ -56,6 +57,7 @@ namespace TarkovModMenu
         }
     }
 
+    //  https://gist.github.com/ethanedits/9c97dfc3746412007c43101e93dfbc98
     public class Draw : MonoBehaviour
     {
         public static GUIStyle StringStyle { get; set; } = new GUIStyle(GUI.skin.label);
@@ -150,7 +152,8 @@ namespace TarkovModMenu
             DrawLine(new Vector2(Point.x + width, Point.y + height), new Vector2(Point.x, Point.y + height), color, thickness);
         }
 
-        public static void DrawCircle(Vector2 center, float radius, Color color, int num_segments = 0, float thickness = 1)
+        //  https://github.com/sailro/EscapeFromTarkov-Trainer/blob/c433c466c9e9a64fb998c3627f5cc3f1cf95c02f/UI/Render.cs#L91
+        public static void DrawCircle(Vector2 center, float radius, Color color, int num_segments = 0, float thickness = 2f)
         {
             int totalSegments = num_segments * 4;
             float step = 1f / totalSegments;
@@ -167,30 +170,6 @@ namespace TarkovModMenu
                 lastV = currentV;
             }
         }
-
-
-        //  public static void DrawCircle(Vector2 pos, float radius, Color color, int segments = 0, float thickness = 1f)
-        //  { 
-        //      LineRenderer lineRenderer = new LineRenderer();
-        //      lineRenderer.positionCount = segments + 1; // Number of segments plus one to close the circle
-        //      lineRenderer.useWorldSpace = false; // Use local space so the circle is centered around the GameObject
-        //      lineRenderer.startColor = color;
-        //      lineRenderer.endColor = color;
-        //      lineRenderer.startWidth = 0.1f;
-        //      lineRenderer.endWidth = 0.1f;
-        //      
-        //      RectTransform rectTransform = new RectTransform();
-        //      rectTransform.anchoredPosition = pos;
-        //  
-        //      float angle = 0f;
-        //      for (int i = 0; i <= segments; i++)
-        //      {
-        //          float x = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
-        //          float y = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
-        //          lineRenderer.SetPosition(i, new Vector3(x, y, 0));
-        //          angle += 360f / segments;
-        //      }
-        //  }
     }
 
     public class CameraTools
@@ -199,6 +178,7 @@ namespace TarkovModMenu
         {   //  returns the distance from the camera to a point in 3d space
             return Vector2.Distance(cam.transform.position, WorldPosition);
         }
+        
         public static float Distance(Camera cam, Vector3 WorldPosition)
         {   //  returns the distance from the camera to a point in 3d space
             return Vector3.Distance(cam.transform.position, WorldPosition);
@@ -236,18 +216,12 @@ namespace TarkovModMenu
             return true;
         }
 
+        //  https://github.com/sailro/EscapeFromTarkov-Trainer/blob/c433c466c9e9a64fb998c3627f5cc3f1cf95c02f/Features/Players.cs#L403
         public static bool ScopeToScreen(Player player, Vector3 worldPosition, out Vector2 screen)
         {
             screen = Vector2.zero;
 
             Camera cam = Camera.main;
-
-            //  Player pLocalPlayer = GameTools.GetLocalPlayer();
-            //  if (pLocalPlayer == null)
-            //      return false;
-
-            //  if (!GameTools.IsAiming(player))
-            //      return WorldToScreen(cam, worldPosition, out screen);
 
             //  Get Scope Params
 
@@ -311,20 +285,6 @@ namespace TarkovModMenu
             var scopePoint = (Vector2)scopeCam.WorldToScreenPoint(worldPosition) + cameraOffset;
             scopePoint.y = Screen.height - scopePoint.y * scale;
             scopePoint.x *= scale;
-
-            //  if (clamp)
-            //  {
-            //      //  return ClampPointToScope(scopePoint);
-            //      var distance = Vector2.Distance(_scopeParameters.center, scopePoint);
-            //  
-            //      var clampedPoint = scopePoint;
-            //  
-            //      if (distance > _scopeParameters.radius)
-            //      {
-            //          var clampedVector = (scopePoint - _scopeParameters.center).normalized * _scopeParameters.radius;
-            //          clampedPoint = _scopeParameters.center + clampedVector;
-            //      }
-            //  }
 
             var distance = Vector2.Distance(scopeCenter, scopePoint);
             if (distance > scopeRadius)
@@ -617,30 +577,6 @@ namespace TarkovModMenu
                     max.y = screen_bonePos.y;
 
             }
-            //  foreach ( var bone in bones )
-            //  {
-            //      if (bone.Value == null)
-            //          continue;
-            //  
-            //      //  Get bone position
-            //      Vector3 pos = bone.Value.position;
-            //  
-            //      //  get bone screen position
-            //      if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, pos, out screen_bonePos))
-            //          return false;
-            //  
-            //      //  MIN
-            //      if (screen_bonePos.x < min.x)
-            //          min.x = screen_bonePos.x;
-            //      if (screen_bonePos.y < min.y)
-            //          min.y = screen_bonePos.y;
-            //  
-            //      //  MAX
-            //      if (screen_bonePos.x > max.x)
-            //          max.x = screen_bonePos.x;
-            //      if (screen_bonePos.y > max.y)
-            //          max.y = screen_bonePos.y;
-            //  }
 
             //  Get head position
             Vector3 headBone = bones[Bones.Head].position;
@@ -1077,81 +1013,6 @@ namespace TarkovModMenu
                 Draw.DrawLine(screen[i + 4], screen[((i + 1) % 4) +4], color, thickness);
                 Draw.DrawLine(screen[i], screen[i + 4], color, thickness);
             }
-
-            /* // OLD METHOD
-
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[0], out screen0))
-            {
-                Debug.Log($"[Render3DBox][0] failed to project point to screen {v[0]}");
-                return;
-            }
-
-            Vector2 screen1;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[1], out screen1))
-            {
-                Debug.Log($"[Render3DBox][1] failed to project point to screen {v[1]}");
-                return;
-            }
-
-            Vector2 screen2;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[2], out screen2))
-            {
-                Debug.Log($"[Render3DBox][2] failed to project point to screen {v[2]}");
-                return;
-            }
-
-            Vector2 screen3;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[3], out screen3))
-            {
-                Debug.Log($"[Render3DBox][3] failed to project point to screen {v[3]}");
-                return;
-            }
-
-            Vector2 screen4;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[4], out screen4))
-            {
-                Debug.Log($"[Render3DBox][4] failed to project point to screen {v[4]}");
-                return;
-            }
-
-            Vector2 screen5;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[5], out screen5))
-            {
-                Debug.Log($"[Render3DBox][5] failed to project point to screen {v[5]}");
-                return;
-            }
-
-            Vector2 screen6;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[6], out screen6))
-            {
-                Debug.Log($"[Render3DBox][6] failed to project point to screen {v[6]}");
-                return;
-            }
-
-            Vector2 screen7;
-            if (!CameraTools.ProjectWorldLocationToScreen(pLocalPlayer, v[7], out screen7))
-            {
-                Debug.Log($"[Render3DBox][7] failed to project point to screen {v[7]}");
-                return;
-            }
-
-
-            Draw.DrawLine(screen0, screen1, color, thickness);
-            Draw.DrawLine(screen1, screen2, color, thickness);
-            Draw.DrawLine(screen2, screen3, color, thickness);
-            Draw.DrawLine(screen3, screen0, color, thickness);
-
-            Draw.DrawLine(screen4, screen5, color, thickness);
-            Draw.DrawLine(screen5, screen6, color, thickness);
-            Draw.DrawLine(screen6, screen7, color, thickness);
-            Draw.DrawLine(screen7, screen4, color, thickness);
-
-            Draw.DrawLine(screen0, screen4, color, thickness);
-            Draw.DrawLine(screen1, screen5, color, thickness);
-            Draw.DrawLine(screen2, screen6, color, thickness);
-            Draw.DrawLine(screen3, screen7, color, thickness);
-
-            */
         }
     }
 }

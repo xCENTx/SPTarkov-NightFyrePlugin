@@ -213,32 +213,32 @@ namespace TarkovModMenu
             Draw.DrawString(new Vector2(StartPos.x, StartPos.y + szText.y), version_watermark, Color.white, false);
 
             ///  Render Debug Text
-            if (Plugin.dbg_bDebugText.Value == true)
-            {
-                Vector2 dbgStartPos = new Vector2(Screen.width, StartPos.y + heightPadding * 3);
-                string dbgText_frametime = $"OnGUI Update: {OnGui_AvgFrameTime:F1}ms";
-                szText = Draw.CalcTextSize(dbgText_frametime);
-                Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y), dbgText_frametime, Color.yellow, false);
-            
-                string dbgText_gameWorld = $"World: {pWorld}";
-                szText = Draw.CalcTextSize(dbgText_gameWorld);
-                Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y), dbgText_gameWorld, Color.yellow, false);
-            
-                string dbgText_player = $"Player: {pLocalPlayer}";
-                szText = Draw.CalcTextSize(dbgText_player);
-                Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y * 2), dbgText_player, Color.yellow, false);
-            
-                if (pWorld != null)
-                {
-                    string dbgText_actors = $"Actors: {pWorld.AllAlivePlayersList.Count}";
-                    szText = Draw.CalcTextSize(dbgText_actors);
-                    Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y * 3), dbgText_actors, Color.yellow, false);
-            
-                    string dbgText_mines = $"Mines: {Features.Mines.Count}";
-                    szText = Draw.CalcTextSize(dbgText_mines);
-                    Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y * 4), dbgText_mines, Color.yellow, false);
-                }
-            }
+            //  if (Plugin.dbg_bDebugText.Value == true)
+            //  {
+            //      Vector2 dbgStartPos = new Vector2(Screen.width, StartPos.y + heightPadding * 3);
+            //      string dbgText_frametime = $"OnGUI Update: {OnGui_AvgFrameTime:F1}ms";
+            //      szText = Draw.CalcTextSize(dbgText_frametime);
+            //      Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y), dbgText_frametime, Color.yellow, false);
+            //  
+            //      string dbgText_gameWorld = $"World: {pWorld}";
+            //      szText = Draw.CalcTextSize(dbgText_gameWorld);
+            //      Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y), dbgText_gameWorld, Color.yellow, false);
+            //  
+            //      string dbgText_player = $"Player: {pLocalPlayer}";
+            //      szText = Draw.CalcTextSize(dbgText_player);
+            //      Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y * 2), dbgText_player, Color.yellow, false);
+            //  
+            //      if (pWorld != null)
+            //      {
+            //          string dbgText_actors = $"Actors: {pWorld.AllAlivePlayersList.Count}";
+            //          szText = Draw.CalcTextSize(dbgText_actors);
+            //          Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y * 3), dbgText_actors, Color.yellow, false);
+            //  
+            //          string dbgText_mines = $"Mines: {Features.Mines.Count}";
+            //          szText = Draw.CalcTextSize(dbgText_mines);
+            //          Draw.DrawString(new Vector2((dbgStartPos.x - szText.x) - widthPadding, dbgStartPos.y + szText.y * 4), dbgText_mines, Color.yellow, false);
+            //      }
+            //  }
         }
     
         //  called at a fixed frequency and is independent of the games frame rate / update loops
